@@ -1,0 +1,141 @@
+{
+  "estudio": "El Costo del Éxito",
+  "n": 5000,
+  "variables": 41,
+  "fecha": "2024",
+  "kpis": {
+    "Patrimonio mediano (M USD)": 3.27,
+    "Patrimonio medio (M USD)": 13.348,
+    "ROI anualizado promedio (%)": 36.503,
+    "ROI anualizado mediano (%)": 36.1,
+    "Horas/sem pico promedio": 72.249,
+    "Años hasta primer millón (media)": 6.83,
+    "Años hasta primer millón (mediana)": 7.0,
+    "Score disciplina promedio (0-10)": 7.364,
+    "Score conocimiento promedio (0-50)": 22.071,
+    "Sacrificio total promedio (0-10)": 6.992,
+    "Sacrificio familia promedio": 7.492,
+    "Sacrificio salud promedio": 6.24,
+    "Sacrificio amor/pareja promedio": 7.214,
+    "% con sacrificio total ≥7": 51.1,
+    "% tiempo libre ≥7 (ocio)": 77.98,
+    "Score éxito promedio (0-100)": 29.194,
+    "Bienestar psicológico promedio": 47.424,
+    "Satisfacción de vida promedio": 59.674,
+    "Divorcios promedio": 1.449,
+    "% con ≥1 divorcio": 76.06,
+    "Sueño promedio (hrs/noche)": 5.205,
+    "% con sueño <6h": 79.44,
+    "Empleos generados (media)": 38.136,
+    "Capital inicial promedio (USD)": 7934.648,
+    "Trayectoria total promedio (años)": 12.875,
+    "Attr. disciplina declarada (%)": 26.636,
+    "Attr. suerte declarada (%)": 3.914
+  },
+  "top_10_correlaciones": [
+    {
+      "var_a": "horas_sem_pico",
+      "var_b": "sacrificio_total",
+      "r": 0.8916,
+      "fuerza": "Muy fuerte"
+    },
+    {
+      "var_a": "sacrificio_ocio_hobbies",
+      "var_b": "sacrificio_total",
+      "r": 0.7359,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "anos_primer_millon",
+      "var_b": "anos_trayectoria_total",
+      "r": 0.7245,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "sacrificio_total",
+      "var_b": "bienestar_psicologico",
+      "r": -0.7199,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "sacrificio_sueno",
+      "var_b": "sacrificio_total",
+      "r": 0.717,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "sacrificio_familia",
+      "var_b": "sacrificio_total",
+      "r": 0.7052,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "horas_sem_pico",
+      "var_b": "sacrificio_ocio_hobbies",
+      "r": 0.6987,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "sacrificio_amor_pareja",
+      "var_b": "sacrificio_total",
+      "r": 0.6886,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "sacrificio_salud",
+      "var_b": "sacrificio_total",
+      "r": 0.6813,
+      "fuerza": "Fuerte"
+    },
+    {
+      "var_a": "horas_sem_pico",
+      "var_b": "sacrificio_sueno",
+      "r": 0.6671,
+      "fuerza": "Fuerte"
+    }
+  ],
+  "sacrificio_ranking": [
+    {
+      "sacrificio": "Ocio/Hobbies",
+      "pct_gte7": 78.0
+    },
+    {
+      "sacrificio": "Familia",
+      "pct_gte7": 64.3
+    },
+    {
+      "sacrificio": "Sueño",
+      "pct_gte7": 58.9
+    },
+    {
+      "sacrificio": "Amor/Pareja",
+      "pct_gte7": 56.8
+    },
+    {
+      "sacrificio": "Salud física",
+      "pct_gte7": 32.4
+    },
+    {
+      "sacrificio": "Amigos",
+      "pct_gte7": 21.0
+    }
+  ],
+  "roi_por_sector": {
+    "roi_media": {
+      "Tecnología": 52.69,
+      "Finanzas": 48.48,
+      "Inmuebles": 32.45,
+      "Retail/Comercio": 28.36,
+      "Salud/Farma": 27.11,
+      "Manufactura": 25.36,
+      "Servicios": 22.25,
+      "Agroindustria": 19.15
+    }
+  },
+  "regresion_r2": 0.1082,
+  "regresion_r2_adj": 0.1069,
+  "paradoja_exito_bienestar_r": -0.0374,
+  "atribucion_top_factor": "Disciplina",
+  "atribucion_top_pct": 26.64,
+  "nota_metodologica": "Dataset sintético calibrado con distribuciones de literatura académica. Referencias: Hurst & Pugsley (2011), Moskowitz & Vissing-Jørgensen (2002), Cagetti & De Nardi (2006)."
+}

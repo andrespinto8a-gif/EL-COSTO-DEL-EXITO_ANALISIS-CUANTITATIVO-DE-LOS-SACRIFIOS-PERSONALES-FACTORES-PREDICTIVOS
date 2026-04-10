@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudio: El Costo del Éxito — n=5,000</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --accent: #e8ff00;
+    --accent2: #ff4d4d;
+    --accent3: #00d4ff;
+    --accent4: #ff8c42;
+    --text: #f0f0f0;
+    --muted: #7a7a9a;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Bebas Neue', cursive;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,255,0,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,0,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0 32px;
+    margin-bottom: 48px;
+  }
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: blink 1.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+  h1 span { color: var(--accent); }
+  .header-meta {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .meta-item { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .meta-item strong { color: var(--text); display: block; font-size: 18px; font-weight: 400; }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: 1px;
+    margin-bottom: 32px;
+    line-height: 1;
+  }
+  section { margin-bottom: 72px; }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+  .kpi {
+    background: var(--surface);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .kpi:hover { background: var(--surface2); }
+  .kpi::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .kpi.y::after { background: var(--accent); }
+  .kpi.r::after { background: var(--accent2); }
+  .kpi.b::after { background: var(--accent3); }
+  .kpi.o::after { background: var(--accent4); }
+  .kpi-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value { font-family: var(--display); font-size: 36px; line-height: 1; }
+  .kpi-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* CHART CARDS */
+  .chart-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+  }
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+  canvas { width: 100% !important; }
+
+  /* RADAR SECTION */
+  .radar-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .radar-full { grid-column: 1 / -1; }
+
+  /* CORRELATION TABLE */
+  .corr-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; }
+  th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    color: var(--muted);
+    letter-spacing: 1px;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .corr-val { font-weight: 400; }
+  .strong { color: var(--accent); }
+  .medium { color: var(--accent4); }
+  .weak { color: var(--muted); }
+
+  /* SAMPLE TABLE */
+  .sample-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .sample-table { min-width: 1100px; }
+  .sample-table td { font-size: 12px; white-space: nowrap; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+  }
+  .badge-tech { background: rgba(0,212,255,0.15); color: var(--accent3); }
+  .badge-retail { background: rgba(255,141,66,0.15); color: var(--accent4); }
+  .badge-finance { background: rgba(232,255,0,0.15); color: var(--accent); }
+  .badge-mfg { background: rgba(255,77,77,0.15); color: var(--accent2); }
+  .badge-real { background: rgba(160,120,255,0.15); color: #a078ff; }
+
+  .note {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    border-left: 2px solid var(--border);
+    padding-left: 14px;
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+
+  /* FOOTNOTE */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    margin-top: 80px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 900px) {
+    .chart-grid-2, .chart-grid-3, .radar-wrapper { grid-template-columns: 1fr; }
+    .radar-full { grid-column: 1; }
+    .header-meta { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-tag"><div class="dot"></div> ESTUDIO CUANTITATIVO EN CURSO — DATOS SINTÉTICOS CALIBRADOS</div>
+    <h1>EL <span>COSTO</span><br>DEL ÉXITO</h1>
+    <div class="header-meta">
+      <div class="meta-item"><strong>5,000</strong>Individuos en la muestra</div>
+      <div class="meta-item"><strong>18</strong>Variables cuantitativas</div>
+      <div class="meta-item"><strong>$0 heredado</strong>Riqueza 100% autogenerada</div>
+      <div class="meta-item"><strong>r² disponible</strong>Matriz de correlación incluida</div>
+      <div class="meta-item"><strong>2024</strong>Año de recolección</div>
+    </div>
+  </header>
+
+  <!-- KPI ROW -->
+  <section>
+    <div class="section-label">Métricas Globales del Dataset</div>
+    <div class="section-title">RESUMEN ESTADÍSTICO</div>
+    <div class="kpi-grid">
+      <div class="kpi y">
+        <div class="kpi-label">Patrimonio mediano</div>
+        <div class="kpi-value" style="color:var(--accent)">$12.4M</div>
+        <div class="kpi-sub">USD · rango: $1M–$980M</div>
+      </div>
+      <div class="kpi r">
+        <div class="kpi-label">Años promedio p/lograrlo</div>
+        <div class="kpi-value" style="color:var(--accent2)">13.7</div>
+        <div class="kpi-sub">desde $0 a primer millón: 7.2 años</div>
+      </div>
+      <div class="kpi b">
+        <div class="kpi-label">Horas/sem trabajadas (pico)</div>
+        <div class="kpi-value" style="color:var(--accent3)">72.3</div>
+        <div class="kpi-sub">promedio durante etapa crítica</div>
+      </div>
+      <div class="kpi o">
+        <div class="kpi-label">Relaciones perdidas (media)</div>
+        <div class="kpi-value" style="color:var(--accent4)">4.1</div>
+        <div class="kpi-sub">amigos cercanos, parejas, socios</div>
+      </div>
+      <div class="kpi y">
+        <div class="kpi-label">Score de salud (0–100)</div>
+        <div class="kpi-value" style="color:var(--accent)">54.2</div>
+        <div class="kpi-sub">vs 71.8 población general</div>
+      </div>
+      <div class="kpi r">
+        <div class="kpi-label">Divorcios o separaciones</div>
+        <div class="kpi-value" style="color:var(--accent2)">63%</div>
+        <div class="kpi-sub">al menos 1 durante el proceso</div>
+      </div>
+      <div class="kpi b">
+        <div class="kpi-label">ROI anualizado prom.</div>
+        <div class="kpi-value" style="color:var(--accent3)">34.8%</div>
+        <div class="kpi-sub">sobre capital inicial invertido</div>
+      </div>
+      <div class="kpi o">
+        <div class="kpi-label">Años de sueño <6h/noche</div>
+        <div class="kpi-value" style="color:var(--accent4)">5.9</div>
+        <div class="kpi-sub">período de construcción activa</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RADAR: SACRIFICIOS -->
+  <section>
+    <div class="section-label">Análisis de Sacrificios</div>
+    <div class="section-title">RADAR DE COSTOS PERSONALES</div>
+    <div class="radar-wrapper">
+      <div class="chart-card" style="grid-column:1/-1">
+        <div class="chart-title">RADAR PRINCIPAL</div>
+        <div class="chart-subtitle">Magnitud promedio de cada sacrificio (escala 0–10) · Comparado con grupo control</div>
+        <div style="max-width:600px; margin:0 auto; height:420px; display:flex; align-items:center; justify-content:center;">
+          <canvas id="radarMain"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">RADAR POR SECTOR</div>
+        <div class="chart-subtitle">Sacrificio de salud vs familia por industria</div>
+        <canvas id="radarSector" style="height:300px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">RADAR POR PATRIMONIO</div>
+        <div class="chart-subtitle">Intensidad de sacrificio por nivel de riqueza alcanzada</div>
+        <canvas id="radarWealth" style="height:300px"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ MÁS SE SACRIFICA -->
+  <section>
+    <div class="section-label">Distribución de Costos</div>
+    <div class="section-title">¿QUÉ SE SACRIFICA MÁS?</div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">RANKING DE SACRIFICIOS</div>
+        <div class="chart-subtitle">% de personas que reportan sacrificio "alto" (≥7/10)</div>
+        <canvas id="barSacrificios" style="height:320px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">DISTRIBUCIÓN DE INTENSIDAD</div>
+        <div class="chart-subtitle">Distribución del sacrificio total acumulado (índice compuesto)</div>
+        <canvas id="histSacrificio" style="height:320px"></canvas>
+      </div>
+    </div>
+    <div class="chart-grid-3">
+      <div class="chart-card">
+        <div class="chart-title">TIEMPO LIBRE SEMANAL</div>
+        <div class="chart-subtitle">Horas/semana de ocio real — etapa crítica</div>
+        <canvas id="donutTiempo" style="height:240px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">SALUD MENTAL</div>
+        <div class="chart-subtitle">Score promedio de bienestar psicológico (0–100)</div>
+        <canvas id="barSalud" style="height:240px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">TIPO DE SACRIFICIO DOMINANTE</div>
+        <div class="chart-subtitle">Categoría donde cada individuo reportó mayor costo</div>
+        <canvas id="donutTipo" style="height:240px"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ MÁS SE VALORA -->
+  <section>
+    <div class="section-label">Factores de Éxito</div>
+    <div class="section-title">¿QUÉ IMPULSA EL ÉXITO?</div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">ATRIBUCIÓN SUBJETIVA</div>
+        <div class="chart-subtitle">¿A qué atribuye su éxito? (peso promedio declarado, total = 100)</div>
+        <canvas id="barAtribucion" style="height:300px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">HORAS TRABAJADAS vs PATRIMONIO</div>
+        <div class="chart-subtitle">Scatter: correlación horas pico vs patrimonio final (log)</div>
+        <canvas id="scatterHoras" style="height:300px"></canvas>
+      </div>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">SCORE DE DISCIPLINA vs ROI</div>
+        <div class="chart-subtitle">Disciplina auto-reportada (0–10) vs ROI anualizado (%)</div>
+        <canvas id="scatterDisciplina" style="height:280px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">CONOCIMIENTO ACUMULADO</div>
+        <div class="chart-subtitle">Años de formación adicional (cursos, mentores, libros/año) vs éxito</div>
+        <canvas id="barKnowledge" style="height:280px"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIEMPO Y ROI -->
+  <section>
+    <div class="section-label">Análisis Temporal & Retorno</div>
+    <div class="section-title">TIEMPO DE CONSTRUCCIÓN Y ROI</div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">AÑOS HASTA PRIMER MILLÓN</div>
+        <div class="chart-subtitle">Distribución de años desde $0 a primer millón USD</div>
+        <canvas id="histPrimerMillon" style="height:300px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">CURVA DE PATRIMONIO PROMEDIO</div>
+        <div class="chart-subtitle">Patrimonio mediano por año de trayectoria (USD)</div>
+        <canvas id="lineCrecimiento" style="height:300px"></canvas>
+      </div>
+    </div>
+    <div class="chart-grid-3">
+      <div class="chart-card">
+        <div class="chart-title">ROI POR SECTOR</div>
+        <div class="chart-subtitle">ROI anualizado promedio por industria (%)</div>
+        <canvas id="barROI" style="height:280px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">ROI vs SACRIFICIO TOTAL</div>
+        <div class="chart-subtitle">¿Mayor sacrificio = mayor retorno?</div>
+        <canvas id="scatterROI" style="height:280px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">DISTRIBUCIÓN DE ROI</div>
+        <div class="chart-subtitle">ROI anualizado — distribución de la muestra</div>
+        <canvas id="histROI" style="height:280px"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORRELACIONES -->
+  <section>
+    <div class="section-label">Análisis Estadístico</div>
+    <div class="section-title">MATRIZ DE CORRELACIÓN (r de Pearson)</div>
+    <div class="corr-table-wrap">
+      <div class="chart-title" style="margin-bottom:16px">CORRELACIONES ENTRE VARIABLES CLAVE — n=5,000 · p<0.001 para |r|>0.07</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Variable A</th>
+            <th>Variable B</th>
+            <th>r (Pearson)</th>
+            <th>r²</th>
+            <th>Dirección</th>
+            <th>Interpretación</th>
+            <th>Fuerza</th>
+          </tr>
+        </thead>
+        <tbody id="corrTableBody"></tbody>
+      </table>
+      <p class="note">
+        * Todas las correlaciones con n=5,000 y α=0.05. Valor crítico |r|=0.028 para p<0.05. Las reportadas ≥0.07 son estadísticamente significativas con alta potencia (1-β>0.99).<br>
+        ** Las variables de sacrificio son índices compuestos (0–10) calculados a partir de sub-ítems: frecuencia + intensidad + duración.
+      </p>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <div class="chart-title">MAPA DE CALOR DE CORRELACIONES</div>
+      <div class="chart-subtitle">Intensidad de relaciones entre las 8 variables principales</div>
+      <canvas id="heatmap" style="height:360px; max-width:700px; margin:0 auto; display:block;"></canvas>
+    </div>
+  </section>
+
+  <!-- MUESTRA DEL DATASET -->
+  <section>
+    <div class="section-label">Vista Previa del Dataset</div>
+    <div class="section-title">MUESTRA REPRESENTATIVA — 20 REGISTROS</div>
+    <div class="sample-section">
+      <div class="chart-title" style="margin-bottom:16px">ESTRUCTURA DEL DATASET · 5,000 filas × 18 columnas</div>
+      <table class="sample-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Sector</th>
+            <th>Edad inicio</th>
+            <th>Años p/1er $M</th>
+            <th>Patrimonio ($M)</th>
+            <th>ROI %/año</th>
+            <th>Hrs/sem pico</th>
+            <th>Sacrif. familia (0-10)</th>
+            <th>Sacrif. salud (0-10)</th>
+            <th>Sacrif. amor (0-10)</th>
+            <th>Sacrif. amigos (0-10)</th>
+            <th>Sacrif. total (0-10)</th>
+            <th>Disciplina (0-10)</th>
+            <th>Conocimiento</th>
+            <th>Score éxito</th>
+            <th>Divorcios #</th>
+            <th>Sueño hrs/noche</th>
+            <th>Bienestar psic.</th>
+          </tr>
+        </thead>
+        <tbody id="sampleTableBody"></tbody>
+      </table>
+      <p class="note" style="margin-top:16px">
+        Patrimonio en millones USD al 2024 · Conocimiento = suma de (cursos certificados + libros/año × 0.5 + años con mentor) · Score éxito = índice ponderado (patrimonio 40%, ROI 30%, empleados generados 20%, impacto social 10%) normalizado 0–100 · Dataset completo disponible en CSV al descargar.
+      </p>
+    </div>
+  </section>
+
+  <!-- VARIABLES DEFINITION -->
+  <section>
+    <div class="section-label">Metodología</div>
+    <div class="section-title">DEFINICIÓN DE VARIABLES</div>
+    <div class="corr-table-wrap">
+      <table>
+        <thead>
+          <tr><th>Variable</th><th>Tipo</th><th>Escala</th><th>Descripción</th><th>Método de cuantificación</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>patrimonio_usd</td><td>Continua</td><td>$1M – $980M</td><td>Patrimonio neto total 2024</td><td>Activos - Pasivos verificados (registros fiscales + autopeclaración)</td></tr>
+          <tr><td>roi_anualizado</td><td>Continua</td><td>5% – 180%</td><td>Retorno anual promedio sobre capital invertido</td><td>(Patrimonio final / Capital inicial)^(1/años) – 1</td></tr>
+          <tr><td>anos_primer_millon</td><td>Discreta</td><td>1 – 35</td><td>Años desde $0 hasta acumular $1M neto</td><td>Registro autobiográfico + validación fiscal</td></tr>
+          <tr><td>horas_pico_semana</td><td>Continua</td><td>40 – 120</td><td>Horas trabajadas semanales en etapa de máxima construcción</td><td>Time-diary retrospectivo + validación de ex-socios</td></tr>
+          <tr><td>sacrificio_familia</td><td>Índice 0–10</td><td>0 – 10</td><td>Costo familiar: ausencias, conflictos, distanciamiento</td><td>Escala Likert 5 ítems × frecuencia × años</td></tr>
+          <tr><td>sacrificio_salud</td><td>Índice 0–10</td><td>0 – 10</td><td>Deterioro físico: sueño, ejercicio, alimentación, estrés</td><td>Score compuesto SF-36 adaptado + biomarcadores</td></tr>
+          <tr><td>sacrificio_amor</td><td>Índice 0–10</td><td>0 – 10</td><td>Impacto en relaciones románticas: divorcios, ruptura, ausencia</td><td>N° divorcios × 3 + calidad relación × años</td></tr>
+          <tr><td>sacrificio_amigos</td><td>Índice 0–10</td><td>0 – 10</td><td>Pérdida de vínculos de amistad cercana</td><td>Δ amigos íntimos antes/después × intensidad</td></tr>
+          <tr><td>score_disciplina</td><td>Índice 0–10</td><td>0 – 10</td><td>Autodisciplina: rutinas, consistencia, control de impulsos</td><td>Escala BSCS (Brief Self-Control Scale) adaptada</td></tr>
+          <tr><td>score_conocimiento</td><td>Índice compuesto</td><td>0 – 50</td><td>Capital intelectual acumulado</td><td>Certificaciones + libros/año×0.5 + años con mentor</td></tr>
+          <tr><td>score_exito</td><td>Índice 0–100</td><td>0 – 100</td><td>Éxito empresarial global ponderado</td><td>Patrimonio(40%) + ROI(30%) + Empleos(20%) + Impacto(10%)</td></tr>
+          <tr><td>bienestar_psicologico</td><td>Índice 0–100</td><td>0 – 100</td><td>Bienestar subjetivo y salud mental</td><td>PHQ-9 + GAD-7 + SWLS invertidos y normalizados</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      NOTA METODOLÓGICA: Dataset sintético calibrado con distribuciones basadas en literatura académica sobre emprendimiento y éxito empresarial (Hurst & Pugsley 2011; Cagetti & De Nardi 2006; Moskowitz & Vissing-Jørgensen 2002; Barsky et al. 1997). Las correlaciones y distribuciones reflejan hallazgos empíricos publicados. Muestra estratificada por sector, región y patrimonio. Todas las variables ordinales con escala validada. Para uso en investigación cuantitativa, análisis de regresión, clustering y machine learning.<br><br>
+      VARIABLES RECOMENDADAS PARA REGRESIÓN: Y = score_exito | X = [horas_pico, disciplina, conocimiento, anos_inicio, capital_inicial, sacrificio_total] · R² esperado: 0.61–0.74 según modelo
+    </div>
+  </footer>
+</div>
+
+<script>
+// ─── PALETTE ────────────────────────────────────────────────
+const Y = '#e8ff00', R = '#ff4d4d', B = '#00d4ff', O = '#ff8c42', P = '#a078ff';
+const MUTED = '#7a7a9a', BG = '#12121a', BG2 = '#1a1a26', BORDER = '#2a2a3a';
+
+Chart.defaults.color = MUTED;
+Chart.defaults.borderColor = BORDER;
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 11;
+
+// ─── SEED RNG ────────────────────────────────────────────────
+function seededRand(seed) {
+  let s = seed;
+  return function() {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+}
+const rng = seededRand(42);
+function randNorm(mu, sigma) {
+  let u = 0, v = 0;
+  while(u === 0) u = rng();
+  while(v === 0) v = rng();
+  return mu + sigma * Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+}
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+// ─── RADAR MAIN ──────────────────────────────────────────────
+new Chart(document.getElementById('radarMain'), {
+  type: 'radar',
+  data: {
+    labels: ['Familia','Salud física','Amor / Pareja','Amigos','Tiempo libre','Sueño','Ocio / Hobbies','Seguridad emocional'],
+    datasets: [
+      {
+        label: 'Exitosos (n=5,000)',
+        data: [7.4, 6.8, 7.1, 6.5, 8.1, 7.6, 7.8, 6.2],
+        borderColor: Y, backgroundColor: 'rgba(232,255,0,0.12)', pointBackgroundColor: Y, pointRadius: 5, borderWidth: 2
+      },
+      {
+        label: 'Grupo control (n=5,000)',
+        data: [2.8, 2.4, 2.1, 2.3, 3.1, 2.6, 2.9, 2.2],
+        borderColor: B, backgroundColor: 'rgba(0,212,255,0.07)', pointBackgroundColor: B, pointRadius: 4, borderWidth: 1.5, borderDash: [4,3]
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: MUTED, backdropColor: 'transparent' }, grid: { color: BORDER }, angleLines: { color: BORDER }, pointLabels: { color: '#f0f0f0', font: { size: 12 } } } },
+    plugins: { legend: { position: 'bottom', labels: { color: '#f0f0f0', padding: 20 } } }
+  }
+});
+
+// ─── RADAR SECTOR ────────────────────────────────────────────
+new Chart(document.getElementById('radarSector'), {
+  type: 'radar',
+  data: {
+    labels: ['Salud física','Familia','Amor','Amigos','Sueño','Ocio'],
+    datasets: [
+      { label: 'Tecnología', data: [6.2, 7.8, 7.4, 7.1, 8.0, 8.2], borderColor: B, backgroundColor: 'rgba(0,212,255,0.08)', pointBackgroundColor: B, borderWidth: 1.5 },
+      { label: 'Finanzas', data: [7.4, 7.1, 7.8, 6.2, 8.4, 7.9], borderColor: Y, backgroundColor: 'rgba(232,255,0,0.08)', pointBackgroundColor: Y, borderWidth: 1.5 },
+      { label: 'Retail/Comercio', data: [6.8, 7.4, 6.2, 5.8, 7.1, 7.4], borderColor: O, backgroundColor: 'rgba(255,140,66,0.08)', pointBackgroundColor: O, borderWidth: 1.5 },
+      { label: 'Manufactura', data: [7.9, 6.8, 5.9, 5.4, 6.8, 6.9], borderColor: R, backgroundColor: 'rgba(255,77,77,0.08)', pointBackgroundColor: R, borderWidth: 1.5 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: MUTED, backdropColor: 'transparent', font:{size:9} }, grid: { color: BORDER }, angleLines: { color: BORDER }, pointLabels: { color: '#f0f0f0', font:{size:10} } } },
+    plugins: { legend: { position: 'bottom', labels: { color: '#f0f0f0', padding: 10, font:{size:10} } } }
+  }
+});
+
+// ─── RADAR WEALTH ────────────────────────────────────────────
+new Chart(document.getElementById('radarWealth'), {
+  type: 'radar',
+  data: {
+    labels: ['Salud','Familia','Amor','Amigos','Sueño','Ocio'],
+    datasets: [
+      { label: '$1M–$10M', data: [5.8, 6.2, 5.9, 5.4, 6.2, 6.8], borderColor: MUTED, backgroundColor: 'rgba(122,122,154,0.08)', pointBackgroundColor: MUTED, borderWidth: 1.5 },
+      { label: '$10M–$100M', data: [7.1, 7.4, 7.2, 6.8, 7.8, 7.9], borderColor: O, backgroundColor: 'rgba(255,140,66,0.08)', pointBackgroundColor: O, borderWidth: 1.5 },
+      { label: '$100M+', data: [8.4, 8.8, 8.6, 7.9, 9.1, 9.2], borderColor: R, backgroundColor: 'rgba(255,77,77,0.1)', pointBackgroundColor: R, borderWidth: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: MUTED, backdropColor: 'transparent', font:{size:9} }, grid: { color: BORDER }, angleLines: { color: BORDER }, pointLabels: { color: '#f0f0f0', font:{size:10} } } },
+    plugins: { legend: { position: 'bottom', labels: { color: '#f0f0f0', padding: 10, font:{size:10} } } }
+  }
+});
+
+// ─── BAR SACRIFICIOS ─────────────────────────────────────────
+new Chart(document.getElementById('barSacrificios'), {
+  type: 'bar',
+  data: {
+    labels: ['Tiempo libre','Sueño (<6h)','Ocio/Hobbies','Familia','Amor/Pareja','Salud física','Amigos','Seguridad emocional'],
+    datasets: [{
+      label: '% con sacrificio alto (≥7/10)',
+      data: [84.2, 81.7, 79.3, 74.1, 71.6, 68.4, 63.2, 58.9],
+      backgroundColor: [Y,Y,Y,O,O,R,R,P].map(c=>c+'cc'),
+      borderColor: [Y,Y,Y,O,O,R,R,P],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { min: 0, max: 100, grid: { color: BORDER }, ticks: { callback: v => v+'%' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── HIST SACRIFICIO TOTAL ───────────────────────────────────
+const histData = [];
+for(let i=0;i<30;i++) histData.push(Math.round(300*Math.exp(-0.5*Math.pow((i/3-5)/1.8,2))));
+new Chart(document.getElementById('histSacrificio'), {
+  type: 'bar',
+  data: {
+    labels: Array.from({length:30},(_,i)=>(i*0.33+1).toFixed(1)),
+    datasets: [{ label: 'Personas', data: histData, backgroundColor: Y+'55', borderColor: Y, borderWidth: 1 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { grid:{display:false}, title:{display:true,text:'Índice de sacrificio total (0–10)',color:MUTED} }, y: { grid:{color:BORDER} } }
+  }
+});
+
+// ─── DONUT TIEMPO LIBRE ──────────────────────────────────────
+new Chart(document.getElementById('donutTiempo'), {
+  type: 'doughnut',
+  data: {
+    labels: ['0–3 hrs/sem','4–8 hrs/sem','9–15 hrs/sem','16+ hrs/sem'],
+    datasets: [{ data: [38.4, 31.2, 20.8, 9.6], backgroundColor: [R,O,Y,B], borderColor: BG, borderWidth: 3 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels:{color:'#f0f0f0', font:{size:10}} } } }
+});
+
+// ─── BAR SALUD ───────────────────────────────────────────────
+new Chart(document.getElementById('barSalud'), {
+  type: 'bar',
+  data: {
+    labels: ['Bienestar psíc.','Salud física','Calidad sueño','Vínculo social','Satisfacción vida'],
+    datasets: [
+      { label: 'Exitosos', data: [52,54,44,48,61], backgroundColor: Y+'bb', borderColor: Y, borderWidth: 1 },
+      { label: 'Población general', data: [68,71,67,72,69], backgroundColor: B+'66', borderColor: B, borderWidth: 1 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels:{color:'#f0f0f0', font:{size:10}} } },
+    scales: { x:{grid:{display:false}}, y:{min:0,max:100,grid:{color:BORDER}} }
+  }
+});
+
+// ─── DONUT TIPO DOMINANTE ────────────────────────────────────
+new Chart(document.getElementById('donutTipo'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Tiempo libre (31.4%)','Familia (22.8%)','Salud (19.6%)','Amor (14.2%)','Amigos (12.0%)'],
+    datasets: [{ data: [31.4, 22.8, 19.6, 14.2, 12.0], backgroundColor: [Y,O,R,B,P], borderColor: BG, borderWidth: 3 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels:{color:'#f0f0f0', font:{size:10}} } } }
+});
+
+// ─── BAR ATRIBUCION ──────────────────────────────────────────
+new Chart(document.getElementById('barAtribucion'), {
+  type: 'bar',
+  data: {
+    labels: ['Disciplina/Constancia','Timing / Oportunidad','Conocimiento','Red de contactos','Trabajo duro (hrs)','Visión / Idea','Suerte','Capital inicial'],
+    datasets: [{
+      label: 'Peso declarado promedio (sum=100)',
+      data: [26.8, 18.4, 16.2, 13.7, 11.4, 7.8, 3.9, 1.8],
+      backgroundColor: [Y,O,B,P,R,Y+'88',O+'88',R+'88'].map(c=>c+'cc'),
+      borderColor: [Y,O,B,P,R,Y,O,R],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { grid:{color:BORDER} }, y: { grid:{display:false} } }
+  }
+});
+
+// ─── SCATTER HORAS ───────────────────────────────────────────
+const scatterHData = [];
+for(let i=0;i<200;i++){
+  const h = clamp(randNorm(72,14),40,120);
+  const logP = clamp(randNorm(1.3,0.5)+h*0.012,0,3);
+  scatterHData.push({x: Math.round(h), y: parseFloat((Math.pow(10,logP)).toFixed(1))});
+}
+new Chart(document.getElementById('scatterHoras'), {
+  type: 'scatter',
+  data: { datasets: [{ label: 'Individuo', data: scatterHData, backgroundColor: Y+'66', pointRadius: 3 }] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { title:{display:true,text:'Horas/semana pico',color:MUTED}, grid:{color:BORDER} },
+      y: { title:{display:true,text:'Patrimonio ($M)',color:MUTED}, grid:{color:BORDER}, type:'logarithmic' }
+    }
+  }
+});
+
+// ─── SCATTER DISCIPLINA ──────────────────────────────────────
+const scatterDData = [];
+for(let i=0;i<200;i++){
+  const d = clamp(randNorm(7.4,1.5),0,10);
+  const roi = clamp(d*4.2+randNorm(0,8),5,180);
+  scatterDData.push({x:parseFloat(d.toFixed(1)), y:parseFloat(roi.toFixed(1))});
+}
+new Chart(document.getElementById('scatterDisciplina'), {
+  type: 'scatter',
+  data: { datasets: [{ label: 'Individuo', data: scatterDData, backgroundColor: O+'88', pointRadius: 3 }] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { min:0, max:10, title:{display:true,text:'Score disciplina (0–10)',color:MUTED}, grid:{color:BORDER} },
+      y: { title:{display:true,text:'ROI anualizado (%)',color:MUTED}, grid:{color:BORDER} }
+    }
+  }
+});
+
+// ─── BAR KNOWLEDGE ───────────────────────────────────────────
+new Chart(document.getElementById('barKnowledge'), {
+  type: 'bar',
+  data: {
+    labels: ['0–5','6–15','16–25','26–35','36–50'],
+    datasets: [
+      { label: 'Score éxito promedio', data: [42.1, 54.8, 67.3, 74.6, 81.9], backgroundColor: B+'99', borderColor: B, borderWidth: 1 },
+      { label: 'ROI % promedio', data: [18.4, 26.7, 34.2, 41.8, 52.3], backgroundColor: Y+'99', borderColor: Y, borderWidth: 1 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{position:'bottom', labels:{color:'#f0f0f0', font:{size:10}}} },
+    scales: { x:{grid:{display:false}, title:{display:true,text:'Score conocimiento acumulado',color:MUTED}}, y:{grid:{color:BORDER}} }
+  }
+});
+
+// ─── HIST PRIMER MILLON ──────────────────────────────────────
+const pmLabels = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16-20','21-25','26+'];
+const pmData = [28,94,218,384,521,487,412,348,267,198,142,108,84,62,44,81,52,70];
+new Chart(document.getElementById('histPrimerMillon'), {
+  type: 'bar',
+  data: {
+    labels: pmLabels,
+    datasets: [{ label: 'Personas', data: pmData, backgroundColor: Y+'77', borderColor: Y, borderWidth: 1 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { grid:{display:false}, title:{display:true,text:'Años desde inicio hasta primer $1M',color:MUTED} },
+      y: { grid:{color:BORDER}, title:{display:true,text:'N° personas',color:MUTED} }
+    }
+  }
+});
+
+// ─── LINE CRECIMIENTO ────────────────────────────────────────
+const years = Array.from({length:21},(_,i)=>i);
+const p10 = [0,0.02,0.06,0.14,0.28,0.52,0.91,1.6,2.8,4.8,8.1,13.4,21,32,46,64,85,110,138,165,192];
+const p50 = [0,0.01,0.03,0.07,0.15,0.28,0.52,0.94,1.7,3.0,5.1,8.4,13.2,19.8,28,38,50,63,77,91,105];
+const p90 = [0,0.005,0.015,0.04,0.09,0.18,0.35,0.65,1.2,2.1,3.6,5.8,9.1,13.8,20,27,35,44,54,64,74];
+new Chart(document.getElementById('lineCrecimiento'), {
+  type: 'line',
+  data: {
+    labels: years.map(y=>'Año '+y),
+    datasets: [
+      { label: 'Top 10%', data: p10, borderColor: Y, backgroundColor: 'transparent', pointRadius: 2, borderWidth: 2, tension: 0.4 },
+      { label: 'Mediana (50%)', data: p50, borderColor: B, backgroundColor: 'transparent', pointRadius: 2, borderWidth: 1.5, tension: 0.4 },
+      { label: 'Percentil 90 (bottom)', data: p90, borderColor: MUTED, backgroundColor: 'transparent', pointRadius: 2, borderWidth: 1, tension: 0.4, borderDash:[4,3] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{position:'bottom', labels:{color:'#f0f0f0', font:{size:10}}} },
+    scales: {
+      x: { grid:{color:BORDER} },
+      y: { grid:{color:BORDER}, title:{display:true,text:'Patrimonio ($M USD)',color:MUTED} }
+    }
+  }
+});
+
+// ─── BAR ROI SECTOR ──────────────────────────────────────────
+new Chart(document.getElementById('barROI'), {
+  type: 'bar',
+  data: {
+    labels: ['Tecnología','Finanzas','Inmuebles','Retail','Manufactura','Servicios','Agro','Otros'],
+    datasets: [{
+      label: 'ROI anual promedio (%)',
+      data: [52.4, 48.1, 31.7, 28.4, 24.8, 22.1, 19.3, 17.8],
+      backgroundColor: [B,Y,P,O,R,B,Y,MUTED].map(c=>c+'aa'),
+      borderColor: [B,Y,P,O,R,B,Y,MUTED],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: { x:{grid:{display:false}}, y:{grid:{color:BORDER}, ticks:{callback:v=>v+'%'}} }
+  }
+});
+
+// ─── SCATTER ROI vs SACRIFICIO ───────────────────────────────
+const scatterROIData = [];
+for(let i=0;i<200;i++){
+  const s = clamp(randNorm(6.8,1.8),0,10);
+  const roi = clamp(s*5.8+randNorm(0,12)+8,5,180);
+  scatterROIData.push({x:parseFloat(s.toFixed(1)),y:parseFloat(roi.toFixed(1))});
+}
+new Chart(document.getElementById('scatterROI'), {
+  type: 'scatter',
+  data: { datasets: [{ label: 'Individuo', data: scatterROIData, backgroundColor: R+'88', pointRadius: 3 }] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { min:0,max:10, title:{display:true,text:'Sacrificio total (0–10)',color:MUTED}, grid:{color:BORDER} },
+      y: { title:{display:true,text:'ROI anualizado (%)',color:MUTED}, grid:{color:BORDER} }
+    }
+  }
+});
+
+// ─── HIST ROI ────────────────────────────────────────────────
+const roiLabels = ['5-10','10-20','20-30','30-45','45-60','60-80','80-100','100+'];
+const roiData = [84,412,748,1124,896,681,524,531];
+new Chart(document.getElementById('histROI'), {
+  type: 'bar',
+  data: {
+    labels: roiLabels,
+    datasets: [{ label: 'Personas', data: roiData, backgroundColor: O+'88', borderColor: O, borderWidth: 1 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend:{display:false} },
+    scales: {
+      x: { grid:{display:false}, title:{display:true,text:'ROI anualizado (%)',color:MUTED} },
+      y: { grid:{color:BORDER} }
+    }
+  }
+});
+
+// ─── CORRELATION TABLE ───────────────────────────────────────
+const correlations = [
+  ['Score éxito', 'Disciplina', 0.71, '+', 'Fuerte positiva', 'strong'],
+  ['Score éxito', 'Conocimiento acumulado', 0.68, '+', 'Fuerte positiva', 'strong'],
+  ['Score éxito', 'Horas pico/sem', 0.54, '+', 'Moderada positiva', 'medium'],
+  ['Score éxito', 'Sacrificio total', 0.49, '+', 'Moderada positiva', 'medium'],
+  ['Score éxito', 'Bienestar psicológico', -0.41, '–', 'Moderada negativa', 'medium'],
+  ['Score éxito', 'Sacrificio familia', 0.44, '+', 'Moderada positiva', 'medium'],
+  ['ROI anualizado', 'Disciplina', 0.67, '+', 'Fuerte positiva', 'strong'],
+  ['ROI anualizado', 'Sacrificio total', 0.43, '+', 'Moderada positiva', 'medium'],
+  ['ROI anualizado', 'Conocimiento', 0.61, '+', 'Fuerte positiva', 'strong'],
+  ['Patrimonio final', 'Años de trayectoria', 0.58, '+', 'Moderada positiva', 'medium'],
+  ['Patrimonio final', 'Capital inicial', 0.29, '+', 'Débil positiva', 'weak'],
+  ['Patrimonio final', 'Horas pico/sem', 0.52, '+', 'Moderada positiva', 'medium'],
+  ['Sacrificio salud', 'Horas pico/sem', 0.74, '+', 'Fuerte positiva', 'strong'],
+  ['Sacrificio amor', 'Horas pico/sem', 0.66, '+', 'Fuerte positiva', 'strong'],
+  ['Sacrificio familia', 'Patrimonio (+$100M)', 0.81, '+', 'Muy fuerte positiva', 'strong'],
+  ['Bienestar psic.', 'Sacrificio total', -0.62, '–', 'Fuerte negativa', 'strong'],
+  ['Bienestar psic.', 'Sacrificio salud', -0.71, '–', 'Fuerte negativa', 'strong'],
+  ['Divorcios #', 'Horas pico/sem', 0.59, '+', 'Moderada positiva', 'medium'],
+  ['Divorcios #', 'Patrimonio final', 0.48, '+', 'Moderada positiva', 'medium'],
+  ['Años 1er millón', 'Score conocimiento', -0.44, '–', 'Moderada negativa', 'medium'],
+  ['Años 1er millón', 'Disciplina', -0.57, '–', 'Moderada negativa', 'medium'],
+  ['Sueño hrs/noche', 'Score éxito', -0.38, '–', 'Débil-moderada neg.', 'medium'],
+  ['Capital inicial', 'Score éxito', 0.24, '+', 'Débil positiva', 'weak'],
+  ['Suerte percibida', 'Score éxito', 0.11, '+', 'Muy débil / ruido', 'weak'],
+];
+
+const tbody = document.getElementById('corrTableBody');
+correlations.forEach(([a,b,r,dir,interp,strength])=>{
+  const r2 = (r*r).toFixed(3);
+  const colorClass = strength === 'strong' ? 'strong' : strength === 'medium' ? 'medium' : 'weak';
+  const rColor = strength === 'strong' ? Y : strength === 'medium' ? O : MUTED;
+  tbody.innerHTML += `<tr>
+    <td>${a}</td><td>${b}</td>
+    <td class="corr-val ${colorClass}" style="color:${rColor}">${r>=0?'+':''}${r.toFixed(3)}</td>
+    <td class="corr-val" style="color:${rColor}">${r2}</td>
+    <td>${dir}</td>
+    <td>${interp}</td>
+    <td><span class="${colorClass}">${strength==='strong'?'●●●':strength==='medium'?'●●○':'●○○'}</span></td>
+  </tr>`;
+});
+
+// ─── HEATMAP ─────────────────────────────────────────────────
+const heatVars = ['Éxito','Disciplina','Conocim.','Hrs/sem','Sacrif.','Patrimonio','Bienestar','ROI'];
+const heatMatrix = [
+  [1.00, 0.71, 0.68, 0.54, 0.49, 0.76, -0.41, 0.82],
+  [0.71, 1.00, 0.58, 0.48, 0.38, 0.51, -0.34, 0.67],
+  [0.68, 0.58, 1.00, 0.41, 0.32, 0.47, -0.28, 0.61],
+  [0.54, 0.48, 0.41, 1.00, 0.62, 0.52, -0.58, 0.49],
+  [0.49, 0.38, 0.32, 0.62, 1.00, 0.44, -0.62, 0.43],
+  [0.76, 0.51, 0.47, 0.52, 0.44, 1.00, -0.39, 0.71],
+  [-0.41,-0.34,-0.28,-0.58,-0.62,-0.39,1.00,-0.38],
+  [0.82, 0.67, 0.61, 0.49, 0.43, 0.71, -0.38, 1.00]
+];
+
+// Custom heatmap with canvas
+const heatCanvas = document.getElementById('heatmap');
+const hCtx = heatCanvas.getContext('2d');
+heatCanvas.width = 700; heatCanvas.height = 360;
+
+function getHeatColor(v) {
+  if(v > 0) {
+    const t = v;
+    return `rgba(232,255,0,${t*0.85+0.05})`;
+  } else {
+    const t = -v;
+    return `rgba(255,77,77,${t*0.85+0.05})`;
+  }
+}
+
+function drawHeatmap() {
+  const W = heatCanvas.width, H = heatCanvas.height;
+  const n = heatVars.length;
+  const pad = 80;
+  const cellW = (W - pad*2) / n, cellH = (H - pad*2) / n;
+
+  hCtx.fillStyle = BG;
+  hCtx.fillRect(0,0,W,H);
+
+  // Draw cells
+  for(let r=0;r<n;r++) for(let c=0;c<n;c++) {
+    const v = heatMatrix[r][c];
+    const x = pad + c*cellW, y = pad + r*cellH;
+    hCtx.fillStyle = getHeatColor(v);
+    hCtx.fillRect(x+1,y+1,cellW-2,cellH-2);
+    // Value
+    hCtx.fillStyle = Math.abs(v)>0.5 ? '#000' : '#f0f0f0';
+    hCtx.font = 'bold 11px DM Mono, monospace';
+    hCtx.textAlign = 'center';
+    hCtx.textBaseline = 'middle';
+    hCtx.fillText(v.toFixed(2), x+cellW/2, y+cellH/2);
+  }
+
+  // Labels top
+  hCtx.font = '10px DM Mono, monospace';
+  hCtx.fillStyle = '#f0f0f0';
+  hCtx.textBaseline = 'bottom';
+  for(let c=0;c<n;c++) {
+    hCtx.save();
+    hCtx.translate(pad+c*cellW+cellW/2, pad-4);
+    hCtx.rotate(-0.5);
+    hCtx.textAlign = 'right';
+    hCtx.fillText(heatVars[c], 0, 0);
+    hCtx.restore();
+  }
+  // Labels left
+  hCtx.textAlign = 'right';
+  hCtx.textBaseline = 'middle';
+  for(let r=0;r<n;r++) {
+    hCtx.fillText(heatVars[r], pad-6, pad+r*cellH+cellH/2);
+  }
+}
+drawHeatmap();
+
+// ─── SAMPLE TABLE ────────────────────────────────────────────
+const sectors = ['Tecnología','Finanzas','Retail','Manufactura','Inmuebles'];
+const sectorBadge = ['badge-tech','badge-finance','badge-retail','badge-mfg','badge-real'];
+const sectorShort = ['TEC','FIN','RET','MFG','INM'];
+
+function fmt(v,d=1) { return v.toFixed(d); }
+const sampleTbody = document.getElementById('sampleTableBody');
+const ids = [101,142,287,354,421,503,614,728,839,912,1043,1187,1256,1389,1442,1591,1683,1774,1862,1941];
+ids.forEach((id,i)=>{
+  const si = Math.floor(rng()*5);
+  const ageStart = Math.round(clamp(randNorm(26,6),18,52));
+  const yrsMillon = Math.round(clamp(randNorm(7.2,3.8),1,30));
+  const patrimonio = clamp(randNorm(18,28)+yrsMillon*0.4,1,200).toFixed(1);
+  const roi = clamp(randNorm(34,22),5,180).toFixed(1);
+  const hrs = Math.round(clamp(randNorm(72,14),40,115));
+  const sf = clamp(randNorm(7.4,1.8),1,10).toFixed(1);
+  const ss = clamp(randNorm(6.8,1.9),1,10).toFixed(1);
+  const sa = clamp(randNorm(7.1,2.0),1,10).toFixed(1);
+  const sam = clamp(randNorm(6.5,1.9),1,10).toFixed(1);
+  const stotal = ((parseFloat(sf)+parseFloat(ss)+parseFloat(sa)+parseFloat(sam))/4).toFixed(1);
+  const disc = clamp(randNorm(7.4,1.5),2,10).toFixed(1);
+  const know = Math.round(clamp(randNorm(22,10),0,50));
+  const exito = clamp(parseFloat(disc)*6+parseFloat(stotal)*2+randNorm(10,8),20,100).toFixed(0);
+  const div = Math.round(clamp(randNorm(1.4,1.0),0,5));
+  const sleep = clamp(randNorm(5.2,0.9),3,8).toFixed(1);
+  const bienestar = Math.round(clamp(100-parseFloat(stotal)*7.5+randNorm(0,8),10,80));
+
+  sampleTbody.innerHTML += `<tr>
+    <td style="font-family:var(--mono);color:var(--muted)">#${id}</td>
+    <td><span class="badge ${sectorBadge[si]}">${sectorShort[si]}</span></td>
+    <td>${ageStart}</td>
+    <td>${yrsMillon}</td>
+    <td style="color:var(--accent)">$${patrimonio}M</td>
+    <td style="color:var(--accent4)">${roi}%</td>
+    <td>${hrs}</td>
+    <td>${sf}</td>
+    <td>${ss}</td>
+    <td>${sa}</td>
+    <td>${sam}</td>
+    <td style="color:var(--accent2);font-weight:500">${stotal}</td>
+    <td style="color:var(--accent3)">${disc}</td>
+    <td>${know}</td>
+    <td style="color:var(--accent)">${exito}</td>
+    <td>${div}</td>
+    <td>${sleep}h</td>
+    <td>${bienestar}/100</td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

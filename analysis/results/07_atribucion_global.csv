@@ -1,0 +1,9 @@
+factor,variable,media_pct_declarado,mediana_pct_declarado,desv_std,min,max,r_con_score_exito,p_con_score_exito,r_con_roi,p_con_roi
+Disciplina / Constancia,attr_disciplina_pct,26.64,26.7,6.64,4.8,52.8,-0.005,0.722041,-0.0073,0.607679
+Timing / Oportunidad,attr_oportunidad_pct,18.4,18.4,5.53,1.8,42.1,-0.0165,0.243615,0.0022,0.877876
+Conocimiento técnico,attr_conocimiento_pct,16.29,16.3,4.77,1.9,36.4,0.0061,0.668272,0.0152,0.284
+Red de contactos,attr_red_pct,13.59,13.6,4.75,1.6,32.9,0.008,0.573362,-0.0056,0.692554
+Trabajo duro (horas),attr_trabajo_duro_pct,11.51,11.5,3.89,1.7,26.8,0.0153,0.278094,0.0131,0.354576
+Visión / Estrategia,attr_vision_pct,7.8,7.7,3.04,0.8,21.5,0.0024,0.867582,-0.0127,0.370158
+Suerte / Azar,attr_suerte_pct,3.91,3.9,2.0,0.0,13.1,0.0007,0.961253,-0.0114,0.422033
+Capital inicial,attr_capital_inicial_pct,1.86,1.8,1.16,-0.2,6.6,-0.0089,0.53034,0.0008,0.953664

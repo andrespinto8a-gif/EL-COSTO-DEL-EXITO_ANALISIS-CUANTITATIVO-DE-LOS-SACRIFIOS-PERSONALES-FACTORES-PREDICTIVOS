@@ -1,0 +1,10 @@
+variable,VIF,tolerancia,alerta
+score_disciplina,1.001,0.999,OK
+score_conocimiento,1.001,0.9989,OK
+horas_sem_pico,4.892,0.2044,OK
+sacrificio_total,4.894,0.2043,OK
+anos_trayectoria_total,1.002,0.9978,OK
+capital_inicial_usd,1.002,0.9976,OK
+score_red_contactos,1.001,0.9994,OK
+score_vision,1.001,0.9988,OK
+score_resiliencia,1.001,0.9988,OK

@@ -1,0 +1,7 @@
+sacrificio,variable,media,mediana,desv_std,pct_alto_gte7,pct_medio_4a7,pct_bajo_lt4,p90,n_exacto_10,n_exacto_0
+Ocio / Hobbies,sacrificio_ocio_hobbies,8.041,8.1,1.421,78.0,21.7,0.3,10.0,623,0
+Familia,sacrificio_familia,7.492,7.5,1.532,64.3,34.3,1.3,9.6,334,0
+Sueño,sacrificio_sueno,7.263,7.3,1.57,58.9,39.4,1.7,9.4,295,0
+Amor / Pareja,sacrificio_amor_pareja,7.214,7.3,1.65,56.8,40.3,2.8,9.5,292,0
+Salud física,sacrificio_salud,6.24,6.2,1.607,32.4,60.1,7.5,8.3,58,0
+Amigos,sacrificio_amigos,5.704,5.7,1.573,21.0,65.8,13.3,7.7,21,2

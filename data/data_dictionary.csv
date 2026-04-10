@@ -1,0 +1,42 @@
+variable,tipo,rango,descripcion,metodo_cuantificacion
+id,str,SUJ-0001 a SUJ-5000,Código único de cada individuo,Asignación secuencial
+sector,cat,8 categorías,Industria principal del negocio,Clasificación CIIU adaptada
+region,cat,12 ciudades,Ciudad base de operaciones,Registro empresarial
+nivel_educacion,cat,6 niveles,Máximo nivel educativo alcanzado,Registro académico verificado
+tipo_negocio,cat,6 tipos,Modelo de negocio principal,Clasificación propia
+estado_civil_inicio,cat,3 estados,Estado civil al comenzar,Registro civil histórico
+edad_inicio,int,17–55,Edad al iniciar primer negocio relevante,Time-diary retrospectivo
+anos_primer_millon,int,1–35,Años desde $0 hasta $1M USD neto,Autobiografía + validación fiscal
+anos_trayectoria_total,int,2–40,Años totales de trayectoria a 2024,Registro mercantil histórico
+capital_inicial_usd,int,"$500–$150,000",Capital propio con el que inició,Declaración patrimonial año cero
+patrimonio_m_usd,float,$1M–$980M,Patrimonio neto total verificado a 2024,Activos – Pasivos (RFC/RUT + bancos)
+roi_anualizado_pct,float,4%–210%,CAGR: (Patrimonio/Capital)^(1/años) − 1,Cálculo financiero estándar
+horas_sem_pico,int,40–120,Horas/sem en etapa de mayor construcción,Time-diary retrospectivo (Kahneman 2004)
+sacrificio_familia,float,0–10,"Costo familiar: ausencias, conflictos",Escala Likert 5 ítems × frecuencia × duración (FAD)
+sacrificio_salud,float,0–10,"Deterioro físico: sueño, ejercicio, estrés",SF-36 Health Survey + biomarcadores
+sacrificio_amor_pareja,float,0–10,Impacto en relaciones románticas,Dyadic Adjustment Scale (DAS)
+sacrificio_amigos,float,0–10,Pérdida vínculos de amistad cercana,Social Network Analysis (Burt 2004)
+sacrificio_ocio_hobbies,float,0–10,Abandono de actividades recreativas,Time-use survey retrospectivo
+sacrificio_sueno,float,0–10,"Privación sueño: horas, calidad, regularidad",PSQI (Pittsburgh Sleep Quality Index)
+sacrificio_total,float,0–10,Promedio de los 6 sacrificios anteriores,Índice compuesto original del estudio
+score_disciplina,float,0–10,"Autodisciplina: rutinas, consistencia",BSCS — Brief Self-Control Scale (Tangney 2004)
+score_conocimiento,int,0–50,Capital intelectual acumulado,Certificaciones + libros/año×0.5 + años mentor
+score_red_contactos,float,0–10,Calidad y amplitud de red profesional,Network Value Score (Burt Structural Holes 1992)
+score_vision,float,0–10,Claridad y ambición de visión empresarial,Locke & Latham Goal Setting Theory
+score_resiliencia,float,0–10,Capacidad de recuperación ante fracasos,Connor-Davidson Resilience Scale (CD-RISC)
+divorcios_num,int,0–6,N° divorcios o separaciones formales,Registro civil + autobiografía
+hijos_num,int,0–7,N° de hijos biológicos o adoptivos,Documentos civiles
+sueno_horas_noche,float,3–9,Horas de sueño nocturno en etapa pico,PSQI + wearable tracker retrospectivo
+ejercicio_dias_sem,float,0–7,Días/sem de actividad física ≥30 min,WHO Physical Activity Guidelines
+empleos_generados,int,"1–5,000",Empleos directos generados a 2024,Nómina empresarial verificada
+score_exito,float,0–100,Índice ponderado de éxito empresarial,Pat(40%)+ROI(30%)+Emp(20%)+Vis(10%)
+bienestar_psicologico,int,0–100,Bienestar subjetivo y salud mental,PHQ-9 + GAD-7 + SWLS normalizados e invertidos
+satisfaccion_vida,int,0–100,Satisfacción global con la vida,"SWLS (Satisfaction With Life Scale, Diener 1985)"
+attr_disciplina_pct,float,0–100%,% éxito atribuido a disciplina (declarado),Entrevista atribución causal (Weiner 1985)
+attr_oportunidad_pct,float,0–100%,% atribuido a timing/oportunidad,Ídem
+attr_conocimiento_pct,float,0–100%,% atribuido a conocimiento técnico,Ídem
+attr_red_pct,float,0–100%,% atribuido a red de contactos,Ídem
+attr_trabajo_duro_pct,float,0–100%,% atribuido a trabajo duro (horas),Ídem
+attr_vision_pct,float,0–100%,% atribuido a visión estratégica,Ídem
+attr_suerte_pct,float,0–100%,% atribuido a suerte/azar,Ídem
+attr_capital_inicial_pct,float,0–100%,% atribuido al capital inicial,Ídem

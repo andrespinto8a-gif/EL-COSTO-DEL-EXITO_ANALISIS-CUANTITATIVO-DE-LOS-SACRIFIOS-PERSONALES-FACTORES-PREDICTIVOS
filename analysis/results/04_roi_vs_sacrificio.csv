@@ -1,0 +1,5 @@
+cuartil_roi,n,roi_medio,sac_total,sac_familia,sac_salud,bienestar,divorcios,patrimonio
+Q1 Bajo,1253,13.32,6.96,7.43,6.17,47.51,1.49,3.19
+Q2 Med-Bajo,1257,29.68,7.0,7.48,6.32,47.44,1.41,3.8
+Q3 Med-Alto,1244,42.6,7.03,7.51,6.28,47.4,1.45,6.79
+Q4 Alto,1246,60.62,6.97,7.55,6.19,47.35,1.44,39.75

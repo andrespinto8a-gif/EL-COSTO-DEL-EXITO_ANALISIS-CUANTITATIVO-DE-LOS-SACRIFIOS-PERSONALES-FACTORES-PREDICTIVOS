@@ -1,0 +1,7 @@
+sacrificio,variable,F_statistic,p_value_anova,sig_anova,kruskal_H,p_kruskal,sig_kruskal,eta_squared,efecto
+Familia,sacrificio_familia,1.2853,0.253135,False,7.7834,0.352085,False,0.0018,Pequeño
+Salud física,sacrificio_salud,0.9605,0.458373,False,7.5704,0.371995,False,0.0013,Pequeño
+Amor / Pareja,sacrificio_amor_pareja,1.1478,0.329736,False,7.4458,0.383981,False,0.0016,Pequeño
+Amigos,sacrificio_amigos,1.1314,0.339898,False,6.1299,0.524669,False,0.0016,Pequeño
+Ocio / Hobbies,sacrificio_ocio_hobbies,0.8442,0.55045,False,7.4102,0.387452,False,0.0012,Pequeño
+Sueño,sacrificio_sueno,2.1812,0.032893,True,16.7898,0.018803,True,0.003,Pequeño

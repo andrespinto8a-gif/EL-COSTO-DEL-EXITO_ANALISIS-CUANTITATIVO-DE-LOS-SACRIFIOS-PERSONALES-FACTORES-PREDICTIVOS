@@ -1,0 +1,7 @@
+,sacrificio_familia,sacrificio_salud,sacrificio_amor_pareja,sacrificio_amigos,sacrificio_ocio_hobbies,sacrificio_sueno
+sacrificio_familia,1.0,0.3686,0.3798,0.3516,0.4552,0.4144
+sacrificio_salud,0.3686,1.0,0.342,0.337,0.4127,0.3777
+sacrificio_amor_pareja,0.3798,0.342,1.0,0.3304,0.4179,0.3807
+sacrificio_amigos,0.3516,0.337,0.3304,1.0,0.3829,0.3682
+sacrificio_ocio_hobbies,0.4552,0.4127,0.4179,0.3829,1.0,0.4635
+sacrificio_sueno,0.4144,0.3777,0.3807,0.3682,0.4635,1.0

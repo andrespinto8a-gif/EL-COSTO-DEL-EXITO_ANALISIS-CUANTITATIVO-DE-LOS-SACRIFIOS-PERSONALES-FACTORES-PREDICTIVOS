@@ -1,0 +1,13 @@
+variable_exito,variable_bienestar,pearson_r,r2,p_value,direccion,interpretacion
+score_exito,bienestar_psicologico,-0.0374,0.0014,0.008188,Negativa,Mayor éxito = PEOR bienestar
+score_exito,satisfaccion_vida,0.0004,0.0,0.976914,Positiva,Mayor éxito = mejor bienestar
+score_exito,sueno_horas_noche,0.0048,0.0,0.732496,Positiva,Mayor éxito = mejor bienestar
+score_exito,ejercicio_dias_sem,-0.0045,0.0,0.749976,Negativa,Mayor éxito = PEOR bienestar
+patrimonio_m_usd,bienestar_psicologico,-0.0162,0.0003,0.252581,Negativa,Mayor éxito = PEOR bienestar
+patrimonio_m_usd,satisfaccion_vida,0.0021,0.0,0.879895,Positiva,Mayor éxito = mejor bienestar
+patrimonio_m_usd,sueno_horas_noche,0.0123,0.0002,0.385929,Positiva,Mayor éxito = mejor bienestar
+patrimonio_m_usd,ejercicio_dias_sem,0.0095,0.0001,0.500452,Positiva,Mayor éxito = mejor bienestar
+roi_anualizado_pct,bienestar_psicologico,-0.0208,0.0004,0.141928,Negativa,Mayor éxito = PEOR bienestar
+roi_anualizado_pct,satisfaccion_vida,-0.0008,0.0,0.957183,Negativa,Mayor éxito = PEOR bienestar
+roi_anualizado_pct,sueno_horas_noche,0.0004,0.0,0.979729,Positiva,Mayor éxito = mejor bienestar
+roi_anualizado_pct,ejercicio_dias_sem,-0.0126,0.0002,0.373358,Negativa,Mayor éxito = PEOR bienestar
